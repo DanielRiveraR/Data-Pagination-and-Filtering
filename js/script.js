@@ -9,7 +9,7 @@ function showPage(list, page) {
    const studentList = document.querySelector('.student-list');
    studentList.innerHTML = '';
 
-   for ( let i = 0; i < list.lenght; i++) {
+   for ( let i = 0; i < list.length; i++) {
       if (i >= startIndex && i < endIndex) {
          let studentItem = `
             <li class="student-item cf">
@@ -56,6 +56,78 @@ function addPagination(list) {
    
 }
 
-// Call functions
+
 showPage(data, 1);
 addPagination(data);
+
+/**
+ * This create a search bar and accept input from users
+ */
+
+const searchBar = `
+   <label for="search" class="student-search">
+      <span>Search by name</span>
+      <input id="search" placeholder="Search by name...">
+      <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
+   </label>
+`;
+document.querySelector('.header').insertAdjacentHTML('beforeend', searchBar);
+
+
+// Variables to store user's input
+const search = document.querySelector('#search');
+const submit = document.querySelector('.student-search button');
+let match = [];
+
+
+
+/** This function takes user's input and the array of names as parameters.
+ *  
+**/
+function searchMatches (input, names) {
+   match = [];
+   for ( let i = 0; i < names.length; i++ ) {
+      const studentName = names[i].name.first.toLowerCase() + ' ' + names[i].name.last.toLowerCase();
+      if (studentName.includes(input.value.toLowerCase()) ) {
+         match.push(names[i]);
+      }
+      
+   }
+   
+}
+
+
+// This event handlers improve users experience by filtering the search results either clicking or just typing.
+
+submit.addEventListener('click', () => {
+   searchMatches(search, data);
+   showPage(match, 1);
+   
+   const header = document.querySelector('.header h2');
+   
+   if (match.length === 0) {
+      header.innerText = 'No results found.';
+      document.querySelector('.active').className = '';
+      
+   } else {
+      header.innerText = 'STUDENTS';
+      addPagination(match);
+   }
+});
+
+
+search.addEventListener('keyup', () => {
+   searchMatches(search, data);
+   showPage(match, 1);
+   
+   const header = document.querySelector('.header h2');
+   
+   if (match.length === 0) {
+      header.innerText = 'No results found.';
+      document.querySelector('.active').className = '';
+   
+   } else {
+      header.innerText = 'STUDENTS';
+      addPagination(match);
+   }
+});
