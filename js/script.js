@@ -105,13 +105,13 @@ submit.addEventListener('click', () => {
    
    const header = document.querySelector('.header h2');
    
-   if (match.length === 0) {
-      header.innerText = 'No results found.';
-      document.querySelector('.active').className = '';
-      
-   } else {
-      header.innerText = 'STUDENTS';
+   if (match.length >= 1) {
       addPagination(match);
+      header.innerText = 'STUDENTS'; 
+   } else {
+      const linkList = document.querySelector('.link-list');
+      linkList.innerHTML = '';
+      header.innerText = 'No results found.';
    }
 });
 
@@ -122,12 +122,12 @@ search.addEventListener('keyup', () => {
    
    const header = document.querySelector('.header h2');
    
-   if (match.length === 0) {
-      header.innerText = 'No results found.';
-      document.querySelector('.active').className = '';
-   
-   } else {
-      header.innerText = 'STUDENTS';
+   if (match.length >= 1) {
       addPagination(match);
+      header.innerText = 'STUDENTS';
+   } else {
+      const linkList = document.querySelector('.link-list');
+      linkList.innerHTML = '';
+      header.innerText = 'No results found.';
    }
 });
